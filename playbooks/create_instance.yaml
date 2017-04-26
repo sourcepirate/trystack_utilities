@@ -1,0 +1,17 @@
+# Playbook creates keys to be used by SSH protocol via ssh-keygen.
+# This does not prompt for passphrase, good for test automation.
+
+- name: Create keys for SSH protocol
+  hosts: "{{ hosts | default('localhost') }}"
+
+  tasks:
+
+    - name: create nova instances
+      command: /usr/local/bin/nova boot --flavor 2 --image ubuntu16.04 --key-name cloud ubuntu16.04
+
+    - name: create resource instance
+      command: /usr/local/bin/nova floating-ip-create
+
+    - name: floating ip assosiated
+      command: /usr/local/bin/nova floating-ip-associate ubuntu16.04 0.0.0.0
+
